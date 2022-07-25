@@ -4,7 +4,7 @@ Prequisities:
 - Docker running and installed on your machine 
 - You are signed into your harbor container registry after running docker login 
 
-Change the below script values in app.py: 
+Change the below script values in the app.py file: 
 
 harbor_username ='<your harbor username here>'
 
