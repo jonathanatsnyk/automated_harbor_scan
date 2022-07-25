@@ -4,20 +4,26 @@ import os
 import subprocess 
 from requests.auth import HTTPBasicAuth
 
+#set required credentials and initial variables
+harbor_username ='<your harbor username here>'
+harbor_password ='<your harbor password here>'
+harbor_instance_url='<url where your harbor server is located>'
+harbor_address_tag='<harbor address prefix you use to tag your images when you built them with docker tag harbor_address/project/repo>'
+tag_to_detect='<tag you have attached to the container images you want snyk to scan>'
+
 #first request gets the projects 
 repositories = []
-# deepcode ignore AuthOverHttp: <please specify a reason of ignoring this>, deepcode ignore TLSCertVerificationDisabled: <please specify a reason of ignoring this>
-# deepcode ignore AuthOverHttp: <please specify a reason of ignoring this>, deepcode ignore TLSCertVerificationDisabled: <please specify a reason of ignoring this>, deepcode ignore TLSCertVerificationDisabled: <please specify a reason of ignoring this>, deepcode ignore TLSCertVerificationDisabled: <please specify a reason of ignoring this>
-res = requests.get('http://20.219.64.10/api/v2.0/projects', verify=False, auth=HTTPBasicAuth('admin', 'Test2130!'))
+
+res = requests.get(harbor_instance_url+'/api/v2.0/projects', verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
 
 
 # now loop through the array and make a new request to get repositories for each project.
 projects = json.loads(res.text)
 for project in projects: 
-    requestStr = "http://20.219.64.10/api/v2.0/projects/"+project['name']+"/repositories?page=1&page_size=10"
+    requestStr = harbor_instance_url+"/api/v2.0/projects/"+project['name']+"/repositories?page=1&page_size=10"
 
-    # deepcode ignore TLSCertVerificationDisabled: <please specify a reason of ignoring this>
-    projectData = requests.get(requestStr, verify=False, auth=HTTPBasicAuth('admin', 'Test2130!'))
+    
+    projectData = requests.get(requestStr, verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
     projectData = json.loads(projectData.text)
     for repository in projectData: 
         repositories.append(repository['name'])
@@ -29,8 +35,8 @@ for repo in repositories:
     repoArr = repo.split('/')
     project = repoArr[0]
     repository = repoArr[1]
-    artifactRequestStr = "http://20.219.64.10/api/v2.0/projects/"+project+"/repositories/"+repository+"/artifacts"
-    artifactData = requests.get(artifactRequestStr, verify=False, auth=HTTPBasicAuth('admin', 'Test2130!'))
+    artifactRequestStr = harbor_instance_url+"/api/v2.0/projects/"+project+"/repositories/"+repository+"/artifacts"
+    artifactData = requests.get(artifactRequestStr, verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
    
     artifactData = artifactData.json()
 
@@ -54,8 +60,8 @@ for artifact in artifactsToScan:
     repository = artifact["repository"]
     tag = artifact["tag"]
 
-    dockerPullStr = "docker pull 20.219.64.10/"+project+"/"+repository+":"+tag
-    snykContainerStr = 'snyk container monitor 20.219.64.10/'+project+'/'+repository+':'+tag 
+    dockerPullStr = "docker pull "+harbor_address_tag+"/"+project+"/"+repository+":"+tag
+    snykContainerStr = "snyk container monitor "+harbor_address_tag+'/'+project+'/'+repository+':'+tag 
     
     print('we are monitoring ',artifact)
     os.system(dockerPullStr)
