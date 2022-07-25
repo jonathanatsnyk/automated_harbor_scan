@@ -6,19 +6,19 @@ Prequisities:
 
 Change the below script values in the app.py file: 
 
-harbor_username ='<your harbor username here>'
+harbor_username ='[your harbor username here]'
 
-harbor_password ='<your harbor password here>'
+harbor_password ='[your harbor password here]'
 
-harbor_instance_url='<url where your harbor server is located>'
+harbor_instance_url='[url where your harbor server is located]'
 
-harbor_address_tag='<harbor address prefix you use to tag your images when you built them with docker tag harbor_address/project/repo, before they were pushed>'
+harbor_address_tag='[harbor address prefix you use to tag your images when you built them with docker tag harbor_address/project/repo, before they were pushed]'
 
-tag_to_detect='<tag you have attached to the container images you want snyk to scan>'
+tag_to_detect='[tag you have attached to the container images you want snyk to scan]'
 
 Description: 
 
-This script will run and cycle through all your projects and repos, and find container images that have a specific tag, e.g snyk_scan or some other value you specify. It will then scan those images using snyk container monitor. Useful for automating the scanning of large number of harbor container registry images without manuallly selecting images to scan. 
+This script will run and cycle through all your projects and repos, and find container images that have a specific tag, e.g snyk_scan or some other value you specify in the tag_to_detect parameter. It will then scan those images using snyk container monitor. Useful for automating the scanning of large number of harbor container registry images without manuallly selecting images to scan. 
 
 You can run the script by cding into the main directory and running: python3 app.py
 
