@@ -6,9 +6,14 @@ from requests.auth import HTTPBasicAuth
 
 #set required credentials and initial variables
 harbor_username ='<your harbor username here>'
+
+
 harbor_password ='<your harbor password here>'
+
 harbor_instance_url='<url where your harbor server is located>'
+
 harbor_address_tag='<harbor address prefix you use to tag your images when you built them with docker tag harbor_address/project/repo>'
+
 tag_to_detect='<tag you have attached to the container images you want snyk to scan>'
 
 #first request gets the projects 
