@@ -49,7 +49,7 @@ for repo in repositories:
         tags = artifact['tags']
         #print(tags)
         for tag in tags: 
-            if tag['name']=='prod_image':
+            if tag['name']==tag_to_detect:
                 #artifactsToScan.append(artifact) 
                 artifactsToScan.append({
                     'project':project,
