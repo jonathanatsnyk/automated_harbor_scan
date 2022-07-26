@@ -54,7 +54,7 @@ for repo in repositories:
                 artifactsToScan.append({
                     'project':project,
                     'repository':repository,
-                    'tag':'prod_image'
+                    'tag':tag_to_detect
                 })
               
                 
