@@ -26,9 +26,8 @@ res = requests.get(harbor_instance_url+'/api/v2.0/projects', auth=HTTPBasicAuth(
 # now loop through the array and make a new request to get repositories for each project.
 projects = json.loads(res.text)
 for project in projects: 
-    requestStr = harbor_instance_url+"/api/v2.0/projects/"+project['name']+"/repositories?page=1&page_size=10"
-
-    
+    requestStr = harbor_instance_url+"/api/v2.0/projects/"+project['name']+"/repositories"
+   
     projectData = requests.get(requestStr, auth=HTTPBasicAuth(harbor_username, harbor_password))
     projectData = json.loads(projectData.text)
     for repository in projectData: 
