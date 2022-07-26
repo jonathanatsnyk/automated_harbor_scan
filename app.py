@@ -19,7 +19,8 @@ tag_to_detect='<tag you have attached to the container images you want snyk to s
 #first request gets the projects 
 repositories = []
 
-res = requests.get(harbor_instance_url+'/api/v2.0/projects', verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
+
+res = requests.get(harbor_instance_url+'/api/v2.0/projects', auth=HTTPBasicAuth(harbor_username, harbor_password))
 
 
 # now loop through the array and make a new request to get repositories for each project.
@@ -28,7 +29,7 @@ for project in projects:
     requestStr = harbor_instance_url+"/api/v2.0/projects/"+project['name']+"/repositories?page=1&page_size=10"
 
     
-    projectData = requests.get(requestStr, verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
+    projectData = requests.get(requestStr, auth=HTTPBasicAuth(harbor_username, harbor_password))
     projectData = json.loads(projectData.text)
     for repository in projectData: 
         repositories.append(repository['name'])
@@ -41,7 +42,7 @@ for repo in repositories:
     project = repoArr[0]
     repository = repoArr[1]
     artifactRequestStr = harbor_instance_url+"/api/v2.0/projects/"+project+"/repositories/"+repository+"/artifacts"
-    artifactData = requests.get(artifactRequestStr, verify=False, auth=HTTPBasicAuth(harbor_username, harbor_password))
+    artifactData = requests.get(artifactRequestStr, auth=HTTPBasicAuth(harbor_username, harbor_password))
    
     artifactData = artifactData.json()
 
